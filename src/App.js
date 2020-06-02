@@ -52,7 +52,7 @@ function App() {
                 const obj = item[headerKey]
                 return ( (headerKey !== 'meta' && headerKey !== '_links') 
                   ? (typeof obj === 'string' || typeof obj === 'number')  
-                     ? <div key={index}>{obj}</div>
+                     ? <div key={index}>{headerKey.includes('date') || headerKey.includes('modified') ? obj.slice(0,10) : obj}</div>
                      : <ul className='object' key={index}> 
                        {obj && Object.keys(obj).map((objKey, index) => {
                           return (
