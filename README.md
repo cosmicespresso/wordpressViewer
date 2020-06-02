@@ -1,6 +1,8 @@
 A simple viewer that renders local as well as remote data from Wordpress API. 
 Still working on rendering very nested objects.
 
+Run with `yarn start`.
+
 For serving local files here is the `server.js` file I'm using (you have to `npm install express` and `npm install cors`)
 
 ```
@@ -26,3 +28,5 @@ app.get('/tags', (req, res) => res.json(tags));
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
 ```
+
+and run with `node server.js`.
