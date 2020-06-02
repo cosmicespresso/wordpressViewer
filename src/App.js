@@ -53,9 +53,13 @@ function App() {
                 return ( (headerKey !== 'meta' && headerKey !== '_links') 
                   ? (typeof obj === 'string' || typeof obj === 'number')  
                      ? <div key={index}>{obj}</div>
-                     : <ul className='object'> 
-                       {Object.keys(obj).map((objKey, index) => {
-                          return (<li key={index}>{obj[objKey]}</li>) 
+                     : <ul className='object' key={index}> 
+                       {obj && Object.keys(obj).map((objKey, index) => {
+                          return (
+                            typeof obj[objKey] === 'string' || typeof obj[objKey] === 'number' 
+                            ? <li key={index}>{obj[objKey]}</li>
+                            : 'TOO NESTED!'
+                          ) 
                         })
                        }
                        </ul>
