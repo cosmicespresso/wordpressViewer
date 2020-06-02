@@ -1,38 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500&display=swap');
+
 .App {
   text-align: center;
+  display: block;
+  width: 95vw;
+  font-family: Inter, sans-serif;
+  font-size: 1.2rem;
+  margin: 0 auto;
+  padding: 10vh 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+button, select {
+  font-family: Inter, sans-serif;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #00f;
+  border-radius: 5px;
+  color: #00f;
+  height: 5vh;
+  font-weight: 500;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+select {
+  color: #000;
+  border: 1px solid;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+button:active, button:hover, select:active {
+  filter: hue-rotate(90deg);
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+header {
+  font-weight: 500;
+  margin: 2vh 0;
+}
+
+.results {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: flex-start;
 }
 
-.App-link {
-  color: #61dafb;
+.card {
+  width: 100%;
+  margin: 5px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 5px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 3px #ccc;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+.card-header, .card-results {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+
+.card-header {
+  color: rgba(0,0,0,0.5);
+}
+
+.card-header > * , .card-results > * {
+  align-self: flex-start;
+  text-align: center;
+  font-size: 0.8rem;
+  margin: 0 10px;
+  overflow: hidden;
+  width: 10%;
 }
