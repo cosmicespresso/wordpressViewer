@@ -42,13 +42,25 @@ function App() {
           <div className='card' key={item.id}>
             <div className='card-header'>
               {Object.keys(item).map((headerKey, index) => {
-                return (<div key={index}>{headerKey}</div>) 
+                return ( headerKey !== 'meta' && headerKey !== '_links' 
+                  ? (<div key={index}>{headerKey}</div>) 
+                  : (null)) 
               })}
             </div>   
             <div className='card-results' >
-              {Object.keys(item).map((headerKey) => {
+              {Object.keys(item).map((headerKey, index) => {
                 const obj = item[headerKey]
-                return (typeof obj === 'string' || typeof obj === 'number'  ? <div>{obj}</div> : <div>OBJECT</div>)
+                return ( (headerKey !== 'meta' && headerKey !== '_links') 
+                  ? (typeof obj === 'string' || typeof obj === 'number')  
+                     ? <div key={index}>{obj}</div>
+                     : <ul className='object'> 
+                       {Object.keys(obj).map((objKey, index) => {
+                          return (<li key={index}>{obj[objKey]}</li>) 
+                        })
+                       }
+                       </ul>
+                  : (null)
+                  )
               })}              
             </div>
           </div>

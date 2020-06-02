@@ -46,7 +46,6 @@ header {
 }
 
 .card {
-  width: 100%;
   margin: 5px 0;
   display: flex;
   flex-direction: column;
@@ -55,7 +54,6 @@ header {
   border-radius: 3px;
   box-shadow: 1px 1px 3px #ccc;
 }
-
 
 .card-header, .card-results {
   width: 100%;
@@ -73,7 +71,16 @@ header {
   align-self: flex-start;
   text-align: center;
   font-size: 0.8rem;
-  margin: 0 10px;
-  overflow: hidden;
-  width: 10%;
+  margin: 0 5px;
+  overflow: scroll;
+  width: 5%;
+  max-height: 5vh;
+}
+
+.card-results > ul.object  {
+  color: #00f;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: scroll;
 }
