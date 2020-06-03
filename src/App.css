@@ -34,11 +34,11 @@ button:hover {
   cursor: pointer;
 }
 
-button.loadmore {
+button.loadmore, .controls > button {
   border: none;
 }
 
-.pagecount {
+.pagecount, .controls {
   font-size: 1rem;
 }
 

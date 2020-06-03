@@ -45,14 +45,22 @@ function App() {
   const handleButtonClick = (e) => {
     e.preventDefault();
     setIsLoading(true); 
-    fetchData(`https://wordsinspace.net/shannon/wp-json/wp/v2/${selectValue}?per_page=${pageLimit}&page=${page}&orderby=id&order=desc`);
+    fetchData(`https://wordsinspace.net/shannon/wp-json/wp/v2/${selectValue}?per_page=${pageLimit}&page=${page}`);
   }
 
   const handlePages = (e) => {
     e.preventDefault();
     setPage(page + 1);
     setIsLoading(true); 
-    fetchData(`https://wordsinspace.net/shannon/wp-json/wp/v2/${selectValue}?per_page=${pageLimit}&page=${page+1}&orderby=id&order=desc`);
+    fetchData(`https://wordsinspace.net/shannon/wp-json/wp/v2/${selectValue}?per_page=${pageLimit}&page=${page+1}`);
+  }
+
+  const handleSorting = (e) => {
+    e.preventDefault();
+    let orderyBy = e.target.value;
+    (selectValue === 'categories' && orderyBy === 'date') 
+     ? setData([]) 
+     : fetchData(`https://wordsinspace.net/shannon/wp-json/wp/v2/${selectValue}?per_page=${pageLimit}&page=${page}&orderby=${orderyBy}&order=asc`);
   }
   
   return (
@@ -66,12 +74,21 @@ function App() {
         <option value="media">media</option>
         <option value="posts">posts</option>
         <option value="tags">tags</option>
+        <option value="pages">pages</option>
+        <option value="search">search</option>
       </select>
 
       {/*<button onClick={() => {setData([]); setIsLoading(true); fetchData(`http://localhost:3002/${selectValue}`)} }>show local JSON</button>*/}
       <button onClick={handleButtonClick}>call Wordpress API </button>
       
       <header>{data.length > 0 ? `There are ${total} entries across ${totalPages} page(s)` : null }</header>
+
+      {!isLoading  && data.length > 0  && 
+        <div className='controls'>
+          <button value='id' onClick={handleSorting}>ordery by id</button>
+          <button value='date' onClick={handleSorting}>ordery by date</button>
+        </div>
+      }
 
       {!isLoading  &&
         data.map( (item, i) => (
