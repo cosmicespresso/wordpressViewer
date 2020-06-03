@@ -4,13 +4,15 @@ import './App.css';
 function App() {
 
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectValue, setSelectValue] = useState('');
 
   const fetchData = async (url) => {
     fetch(url)
       .then((res) => res.json())
       .then((result) => {
-        setData(result)
+        setData(result);
+        setIsLoading(false);
       })
   }
 
@@ -32,11 +34,11 @@ function App() {
         <option value="tags">tags</option>
       </select>
 
-      <button onClick={() => {setData([]); fetchData(`http://localhost:3002/${selectValue}`)} }>show local JSON</button>
-      <button onClick={() => {setData([]); fetchData(`https://wordsinspace.net/shannon/wp-json/wp/v2/${selectValue}`)}}>call Wordpress API </button>
+      <button onClick={() => {setData([]); setIsLoading(true); fetchData(`http://localhost:3002/${selectValue}`)} }>show local JSON</button>
+      <button onClick={() => {setData([]); setIsLoading(true); fetchData(`https://wordsinspace.net/shannon/wp-json/wp/v2/${selectValue}?per_page=100`)}}>call Wordpress API </button>
       
       <header>{data.length > 0 ? `${data.length} entries` : null }</header>
-      {data.length > 0 
+      {!isLoading
         ? 
         data.map( (item) => (
           <div className='card' key={item.id}>
@@ -69,7 +71,7 @@ function App() {
             </div>
           </div>
         ))
-        : null
+        : <div>Loading....</div>
       }
     </div>
   );
