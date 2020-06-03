@@ -1,16 +1,28 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 
-function App() {
 
-  const [data, setData] = useState([]);
+const usePersistedState = (key, defaultValue) => {
+  const [state, setState] = useState(() => {
+    return JSON.parse(
+      localStorage.getItem(key) || JSON.stringify(defaultValue)
+    );
+  });
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(state));
+  }, [key, state]);
+  return [state, setState];
+}
+
+function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectValue, setSelectValue] = useState('');
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const pageLimit = 20;
-  
+  const [data, setData] = usePersistedState(`${selectValue}page${page}`,[])
+
   const fetchData = async (url) => {
     fetch(url)
       .then((res) => {
@@ -19,7 +31,7 @@ function App() {
         return res.json()
       })
       .then((result) => {
-        setData(result);
+        setData(result)
         setIsLoading(false);
       })
   }
@@ -28,12 +40,10 @@ function App() {
     e.preventDefault();
     setPage(1); 
     setSelectValue(e.target.value);
-    setData([]);
   }
 
   const handleButtonClick = (e) => {
     e.preventDefault();
-    setData([]); 
     setIsLoading(true); 
     fetchData(`https://wordsinspace.net/shannon/wp-json/wp/v2/${selectValue}?per_page=${pageLimit}&page=${page}&orderby=id&order=desc`);
   }
@@ -41,7 +51,6 @@ function App() {
   const handlePages = (e) => {
     e.preventDefault();
     setPage(page + 1);
-    setData([]); 
     setIsLoading(true); 
     fetchData(`https://wordsinspace.net/shannon/wp-json/wp/v2/${selectValue}?per_page=${pageLimit}&page=${page+1}&orderby=id&order=desc`);
   }
@@ -63,8 +72,8 @@ function App() {
       <button onClick={handleButtonClick}>call Wordpress API </button>
       
       <header>{data.length > 0 ? `There are ${total} entries across ${totalPages} page(s)` : null }</header>
-      {!isLoading
-        ? 
+
+      {!isLoading  &&
         data.map( (item, i) => (
           <div className='card' key={i}>
             <div className='card-header'>
@@ -85,7 +94,7 @@ function App() {
                           return (
                             typeof obj[objKey] === 'string' || typeof obj[objKey] === 'number' 
                             ? <li key={objIndex}>{obj[objKey]}</li>
-                            : 'TOO NESTED!'
+                            : 'SHIT IS NESTED!'
                           ) 
                         })
                        }
@@ -96,8 +105,8 @@ function App() {
             </div>
           </div>
         ))
-        : <div>Loading....</div>
       }
+      {isLoading && <div>Loading....</div>}
       {!isLoading && data.length > 0 &&  
         <div>
           <button className='loadmore' onClick={handlePages}>Load More</button>
