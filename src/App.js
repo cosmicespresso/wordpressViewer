@@ -21,7 +21,8 @@ function App() {
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const pageLimit = 20;
-  const [data, setData] = usePersistedState(`${selectValue}page${page}`,[])
+  // const [data, setData] = usePersistedState(`${selectValue}page${page}`,[])
+  const [data, setData] = useState([])
 
   const fetchData = async (url) => {
     fetch(url)
