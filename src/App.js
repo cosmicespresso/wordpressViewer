@@ -65,7 +65,7 @@ function App() {
   
   return (
     <div className="App">
-      <header>JSON/Wordpress API playground</header>
+      <header>Shannon's Wordpress entries</header>
 
       <select name="endpoints" onChange={handleChange}>   
         <option value="">select a variable</option>
