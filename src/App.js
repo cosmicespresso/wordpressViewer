@@ -35,6 +35,7 @@ function App() {
     setSelectValue(value);
   }
 
+
   const handleFetch = () => {
     setIsLoading(true); 
     fetchData(`${URL}wp-json/wp/v2/${selectValue}?per_page=${pageLimit}&page=${page}`);
