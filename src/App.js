@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 
-import { Pagination, Typography, Input, Select, Button, Row, Col, Spin, Table, Space} from 'antd';
+import { Input, Select, Button, Row, Col, Spin, Table, Space} from 'antd';
 
 const { Option } = Select;
 
@@ -12,10 +12,10 @@ function App() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const pageLimit = 20;
+  const pageLimit = 100;
   const [data, setData] = useState([]);
-  const [dataSource, setDataSource]=useState([]);
   const [columns, setColumns]=useState([]);
+  const [URL, setURL] = useState('https://wordsinspace.net/shannon/');
 
   const fetchData = async (url) => {
     fetch(url)
@@ -35,13 +35,19 @@ function App() {
     setSelectValue(value);
   }
 
-  const handleButtonClick = () => {
+  const handleFetch = () => {
     setIsLoading(true); 
-    fetchData(`https://wordsinspace.net/shannon/wp-json/wp/v2/${selectValue}?per_page=${pageLimit}&page=${page}`);
+    fetchData(`${URL}wp-json/wp/v2/${selectValue}?per_page=${pageLimit}&page=${page}`);
+  }
+
+  const handlePages = () => {
+    setPage(page + 1);
+    setIsLoading(true); 
+    fetchData(`${URL}wp-json/wp/v2/${selectValue}?per_page=${pageLimit}&page=${page+1}`);
   }
 
   useEffect(()=>{
-		// read data categories from a single data entry
+		// read headers
 		if (data.length > 0) {
 			let headers = Object.keys(data[0]).map( header => {
 				return {
@@ -56,6 +62,14 @@ function App() {
   
   return (
     <div className="App">
+
+    	<Space>
+    		<Row tyle={{margin: '2vh 0'}}>
+    			<Col span={24}>
+			     	<Input onChange={e => setURL(e.target.value)} style={{ width: 400 }} placeholder="Enter a Wordpress URL" />
+		     	</Col>
+    		</Row>
+    	</Space>
 
     	<Space>
 		    <Row style={{margin: '2vh 0'}}>
@@ -74,7 +88,7 @@ function App() {
 	  	
 				<Row style={{margin: '2vh 0'}}>
 		      <Col span={24}>
-						<Button type="primary" loading={isLoading} style={{ width: 180}} onClick={handleButtonClick}>
+						<Button type="primary" loading={isLoading} style={{ width: 180}} onClick={handleFetch}>
 			        Call Wordpress API 
 			      </Button>
 		      </Col>
@@ -88,19 +102,16 @@ function App() {
 			  		? 
 			  			data.length > 0 
 			  				? (
-										<Table columns={columns}  />
+			  						<Space direction={'vertical'} style={{textAlign: 'left'}}>
+	      							<header>{data.length > 0 ? `There are ${total} entries across ${totalPages} page(s)` : null }</header>
+											<Table width={'100vw'} columns={columns} dataSource={data} pagination={{ position: ['bottomLeft'] }} />
+										</Space>
 			  					)
 			  				: null
 			  		: <Spin />
 			    }
 	      </Col>
-	    </Row>
-
-			<Row style={{margin: '2vh 0'}}>
-	      <Col span={24}>	          	
-      		<Pagination defaultCurrent={page} total={totalPages} />
-	      </Col>
-	    </Row>      		
+	    </Row>    		
     </div>
   );
 }
