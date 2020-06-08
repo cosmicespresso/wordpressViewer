@@ -35,15 +35,14 @@ function App() {
     setSelectValue(value);
   }
 
-
   const handleFetch = () => {
     setIsLoading(true); 
     fetchData(`${URL}wp-json/wp/v2/${selectValue}?per_page=${pageLimit}&page=${page}`);
   }
 
   const handlePages = () => {
-    setPage(page + 1);
     setIsLoading(true); 
+    setPage(page + 1);
     fetchData(`${URL}wp-json/wp/v2/${selectValue}?per_page=${pageLimit}&page=${page+1}`);
   }
 
@@ -104,8 +103,23 @@ function App() {
 			  			data.length > 0 
 			  				? (
 			  						<Space direction={'vertical'} style={{textAlign: 'left'}}>
-	      							<header>{data.length > 0 ? `There are ${total} entries across ${totalPages} page(s)` : null }</header>
-											<Table size="small" columns={columns} dataSource={data} pagination={{ position: ['bottomLeft'] }} />
+			  							<Space direction={'vertical'}>
+	      								<div>{data.length > 0 ? `There are ${total} entries across ${totalPages} page(s)` : null }</div>
+			  							</Space>
+
+											<Table  pagination={{
+							          pageSize: 100,
+							          defaultCurrent: 1,
+							          defaultPageSize: 100,
+							          size: 'small',
+							          current: page, 
+							          total: totalPages,
+							          simple: true,
+							          showQuickJumper: false
+							        }} 
+        							bordered rowKey="id"  size="small" columns={columns} dataSource={data} pagination={{ position: ['bottomLeft'] }}   />
+											
+											<Button type="secondary" onClick={handlePages}>{total-pageLimit*page > 0 ? `Fetch the next ${total-pageLimit*page} entries` : 'No more entries to fetch'}</Button>
 										</Space>
 			  					)
 			  				: null
