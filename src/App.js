@@ -105,7 +105,7 @@ function App() {
 			  				? (
 			  						<Space direction={'vertical'} style={{textAlign: 'left'}}>
 	      							<header>{data.length > 0 ? `There are ${total} entries across ${totalPages} page(s)` : null }</header>
-											<Table width={'100vw'} columns={columns} dataSource={data} pagination={{ position: ['bottomLeft'] }} />
+											<Table size="small" columns={columns} dataSource={data} pagination={{ position: ['bottomLeft'] }} />
 										</Space>
 			  					)
 			  				: null
