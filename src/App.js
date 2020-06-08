@@ -115,11 +115,12 @@ function App() {
 							          current: page, 
 							          total: totalPages,
 							          simple: true,
-							          showQuickJumper: false
+							          showQuickJumper: false,
+							          hideOnSinglePage: true
 							        }} 
         							bordered rowKey="id"  size="small" columns={columns} dataSource={data} pagination={{ position: ['bottomLeft'] }}   />
 											
-											<Button type="secondary" onClick={handlePages}>{total-pageLimit*page > 0 ? `Fetch the next ${total-pageLimit*page} entries` : 'No more entries to fetch'}</Button>
+											<Button type="secondary" disabled={total-pageLimit*page <= 0} onClick={handlePages}>{total-pageLimit*page > 0 ? `Fetch the next ${total-pageLimit*page} entries` : 'No more entries to fetch'}</Button>
 										</Space>
 			  					)
 			  				: null
